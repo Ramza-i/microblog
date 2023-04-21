@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, EqualTo, ValidationError, Email
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, EqualTo, ValidationError, Email, Length
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms.widgets import TextArea
+
 from app.models import User
 
 class LoginForm(FlaskForm):
@@ -29,3 +32,12 @@ class RegistrationForm(FlaskForm):
     def validate_password(self, password):
         if len(password.data) < 2:
             raise ValidationError('Пароль должен быть не короче 2 символов')
+
+
+
+class EditProfileForm(FlaskForm):
+
+    username = StringField('Username', validators=[DataRequired()])
+    avatar = FileField('Выбрать Файл', validators=[FileAllowed(['jpg', 'png'])])
+    about_me = TextAreaField('О себе', widget=TextArea(), validators=[Length(min=0, max=140)])
+    submit = SubmitField('Обновить')
