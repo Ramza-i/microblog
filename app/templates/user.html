@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1 style="color : blue">Привет - {{ user.username }}</h1>
-    {% for post in posts %}
-        <div>
-            <p>{{ post.author.username }} says: <b>{{ post.body }}</b></p>
+  <h1 style="color : blue">Привет - {{ current_user.username }}</h1>
+    <div>
+        <div id="about">
+            <div id="avatar" style="border: 1px solid black; padding: 5px; margin-right: 15px; float:left;" >
+            <svg width="120" height="120" >
+              <image href="/static/imgs/userimg/{{ user.avatar }}" height="100%" width="100%" preserveAspectRatio="xMidYMid slice"/>
+            </svg>
+            </div>
+            <div>
+                <h2 style="color: green; font-size:30px">{{ user.username }}</h2>
+                {% if current_user.username == user.username %}
+                    <a href="/edit_profile">Редактировать профиль</a>
+                {% endif %}
+                <p>Последний раз онлайн: {{ user.last_seen }}</p>
+            </div>
         </div>
+    </div>
+    <div id="user_posts" style="clear:both; padding-top:15px; max-width:350px;">
+    {% for post in posts %}
+        {% include '_post.html' %}
     {% endfor %}
+    </div>
 {% endblock %}
