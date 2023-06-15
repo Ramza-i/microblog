@@ -1,5 +1,18 @@
 {% extends "base.html" %}
+
 {% block content %}
+
+{% if userlist %}
+    <div>
+        <ul style="padding-left:0">
+            {% for item in userlist %}
+            <li style="display: inline"><a href="{{ url_for('user', username=item.username) }}">{{ item.username }}</a></li>
+            {% endfor %}
+        </ul>
+        <hr>
+    </div>
+{% endif %}
+
   <h1 style="color : blue">Привет - {{ current_user.username }}</h1>
     <div>
         <div id="about">
@@ -13,7 +26,8 @@
                 {% if current_user.username == user.username %}
                     <a href="/edit_profile">Редактировать профиль</a>
                 {% endif %}
-                <p>Последний раз онлайн: {{ user.last_seen }}</p>
+                {% if user.about_me %}<p>О себе: {{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p>Последний раз онлайн: {{ user.last_seen }}</p>{% endif %}
             </div>
         </div>
     </div>
