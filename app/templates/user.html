@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div id="user_posts" style="clear:both; padding-top:15px; max-width:350px;">
+    <div id="user_posts" style="display: flex; flex-direction: column; clear:both; padding-top:15px; max-width:350px;">
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}
