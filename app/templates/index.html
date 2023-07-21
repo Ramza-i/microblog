@@ -15,8 +15,16 @@
 {% endif %}
     <div id="user_posts" style="display: flex; flex-direction: column; clear:both; padding-top:15px; max-width:350px;">
     {% for post in posts %}
-        <div>
-            <p>{{ post.author.username }} says: <b>{{ post.body }}</b></p>
-        </div>
+        {% include '_post.html' %}
     {% endfor %}
+        <div style="align-self: center;">
+        {% if prev_url %}
+            <a href="{{ prev_url }}">Новые</a>
+        {% endif %}
+        {% if next_url %}
+            <a href="{{ next_url }}">Старые</a>
+        {% endif %}
+        </div>
+    </div>
+
 {% endblock %}
