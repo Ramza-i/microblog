@@ -1,8 +1,8 @@
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Post
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 import os.path
@@ -74,12 +74,11 @@ def register():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     userlist = User.query.all()
-
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('user.html', user=user, posts=posts, title=f'Home|{username}', userlist=userlist)
+    page = request.args.get('page', 1, type=int)
+    posts = user.posts.order_by(Post.timestamp.desc()).paginate(page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    next_url = url_for('user', username=user.username, page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('user', username=user.username, page=posts.prev_num) if posts.has_prev else None
+    return render_template('user.html', user=user, title=f'Home|{username}', userlist=userlist, posts=posts.items, next_url=next_url, prev_url=prev_url)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
