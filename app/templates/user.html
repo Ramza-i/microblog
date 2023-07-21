@@ -23,8 +23,13 @@
             </div>
             <div>
                 <h2 style="color: green; font-size:30px">{{ user.username }}</h2>
+                <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
                 {% if current_user.username == user.username %}
                     <a href="/edit_profile">Редактировать профиль</a>
+                {% elif not current_user.is_following(user) %}
+                    <a href="{{ url_for('follow', username=user.username) }}">Подписаться</a>
+                {% else %}
+                    <a href="{{ url_for('unfollow', username=user.username) }}">Отписаться</a>
                 {% endif %}
                 {% if user.about_me %}<p>О себе: {{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>Последний раз онлайн: {{ user.last_seen }}</p>{% endif %}
