@@ -33,6 +33,15 @@ def index():
 
     return render_template('index.html', title='Главная', form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
 
+@app.route('/explore')
+@login_required
+def explore():
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    next_url = url_for('index', page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('index', page=posts.prev_num) if posts.has_prev else None
+    return render_template('index.html', title='Все посты', posts=posts.items, next_url=next_url, prev_url=prev_url)
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     if current_user.is_authenticated:
@@ -101,3 +110,32 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form, title=f'{current_user.username}|Редактирование')
 
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash(f'User {username} not found.')
+        return redirect(url_for('index'))
+    if user == current_user:
+        flash('You cannot follow yourself!')
+        return redirect(url_for('user', username=username))
+    current_user.follow(user)
+    db.session.commit()
+    flash(f'Вы подписаны на {username}!')
+    return redirect(url_for('user', username=username))
+
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash(f'User {username} not found.')
+        return redirect(url_for('index'))
+    if user == current_user:
+        flash('You cannot unfollow yourself!')
+        return redirect(url_for('user', username=username))
+    current_user.unfollow(user)
+    db.session.commit()
+    flash(f'Вы отписались от {username}.')
+    return redirect(url_for('user', username=username))
