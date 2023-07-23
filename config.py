@@ -8,12 +8,12 @@ class Config():
     POSTS_PER_PAGE = 7
 
     # #Mail config block
-    # MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'localhost'
-    # MAIL_PORT = int(os.environ.get('MAIL_PORT') or 8025)
-    # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
-    # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    # ADMINS = ['bobmail@a.a']
+    MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'localhost'
+    MAIL_PORT = int(os.environ.get('MAIL_PORT') or 8025)
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    ADMINS = ['bobmail@a.a']
     # #/mail
 
     #Изменения произошедшие в мастере
