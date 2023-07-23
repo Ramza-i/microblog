@@ -15,3 +15,5 @@ class Config():
     # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     # ADMINS = ['bobmail@a.a']
     # #/mail
+
+    #Изменения произошедшие в мастере
