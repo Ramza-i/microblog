@@ -1,12 +1,13 @@
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, ResetPasswordRequestForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 import os.path
 from datetime import datetime
+# from app.email import send_password_reset_email
 
 
 @app.before_request
@@ -139,5 +140,19 @@ def unfollow(username):
     db.session.commit()
     flash(f'Вы отписались от {username}.')
     return redirect(url_for('user', username=username))
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data)
+        # if user:
+        #     send_password_reset_email(user)
+        flash('Проверьте почту')
+        return redirect(url_for('login'))
+    return render_template('reset_password_request.html', form=form, title='Сброс пароля')
+
 
 

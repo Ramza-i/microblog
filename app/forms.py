@@ -56,3 +56,7 @@ class EditProfileForm(FlaskForm):
 class PostForm(FlaskForm):
     post = TextAreaField('Скажите что-то', validators=[DataRequired(), Length(min=1, max=140)])
     submit = SubmitField('Отправить')
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Введите Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Отправить')
