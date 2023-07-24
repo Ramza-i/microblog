@@ -3,6 +3,9 @@ from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+import jwt              #
+from time import time   # Импорты для токенов сброса пароля
+from app import app     # app для доступа к secret_key
 
 followers = db.Table('followers',
                      db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -48,6 +51,18 @@ class User(UserMixin, db.Model):
             followers.c.follower_id == self.id)
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
+
+    def get_reset_password_token(self, expires_in=600):     #expires_in=600 - время жизни токена в секундах
+        return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in},
+                          app.config['SECRET_KEY'], algorithm='HS256')      #.decode('utf-8')#decode('utf-8') - заменят строку байтов на строку символов
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],  algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
 
     @login.user_loader
     def load_user(id):
