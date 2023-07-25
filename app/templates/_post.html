@@ -1,16 +1,23 @@
-
-<div style="display:flex; border: 1px solid grey; border-radius: 5px; margin-bottom: 10px; padding: 5px;">
-    <svg width="36" height="36">
-      <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%" preserveAspectRatio="xMidYMid slice"/>
-    </svg>
-    <div style="align-self: center; max-width: 230px; padding-left: 15px;">
-        <a style="color: green" href="{{url_for('user', username=post.author.username) }}">
-            <b>{{ post.author.username }}</b>
-        </a>
-        says:<br>
-        <i>{{ post.body }}</i>
-    </div>
-    <div style="margin-left: auto; max-width: min-content; font-size: 8px; color: grey;">
-        <p>{{ post.timestamp }}</p>
-    </div>
-</div>
+<table class="table table-hover">
+    <tr>
+        <td width="70px">
+            <a href="{{ url_for('user', username=post.author.username) }}">
+                <svg width="60" height="60">
+                    <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%"
+                           preserveAspectRatio="xMidYMid slice"/>
+                </svg>
+            </a>
+        </td>
+        <td>
+            <a href="{{ url_for('user', username=post.author.username) }}">
+                {{ post.author.username }}
+            </a>
+            says:
+            <br>
+            {{ post.body }}
+        </td>
+        <td style="text-align: right;">
+            {{ post.timestamp }}
+        </td>
+    </tr>
+</table>

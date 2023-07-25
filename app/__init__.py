@@ -12,6 +12,7 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 
 from flask_mail import Mail
 
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 app.config.from_object(Config)                      #Следить чтобы зависимые были ниже
@@ -21,6 +22,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 login.login_message = 'keep out'
 mail = Mail(app)
+bootstrap = Bootstrap(app)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:

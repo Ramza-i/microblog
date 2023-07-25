@@ -7,22 +7,22 @@ from wtforms.widgets import TextArea
 from app.models import User
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember me')
-    submit = SubmitField('Sign In')
+    username = StringField('Логин', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    remember_me = BooleanField('Запомнить меня')
+    submit = SubmitField('Войти')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Логин', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    password2 = PasswordField('Повторите пароль', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Зарегистрироваться')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Username занят')
+            raise ValidationError('Логин занят')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
@@ -37,7 +37,7 @@ class RegistrationForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
 
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Логин', validators=[DataRequired()])
     avatar = FileField('Выбрать Файл', validators=[FileAllowed(['jpg', 'png'])])
     about_me = TextAreaField('О себе', widget=TextArea(), validators=[Length(min=0, max=140)])
     submit = SubmitField('Обновить')
@@ -51,7 +51,7 @@ class EditProfileForm(FlaskForm):
         if username.data != self.original_username:
             user = User.query.filter_by(username=username.data).first()
             if user is not None:
-                raise ValidationError('Username занят')
+                raise ValidationError('Логин занят')
 
 class PostForm(FlaskForm):
     post = TextAreaField('Скажите что-то', validators=[DataRequired(), Length(min=1, max=140)])
@@ -62,6 +62,9 @@ class ResetPasswordRequestForm(FlaskForm):
     submit = SubmitField('Отправить')
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    password2 = PasswordField('Повторите пароль', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Изменить пароль')
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')

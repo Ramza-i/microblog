@@ -1,32 +1,39 @@
 {% extends "base.html" %}
-{% block content %}
-  <h1 style="color : blue">Привет - {{ current_user.username }}</h1>
-    <div>
-        <div id="about">
-          <form action="" method="post" novalidate enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            <div id="avatar" style="border: 1px solid black; padding: 5px; margin-right: 15px; float:left; display:flex; flex-direction: column;align-items: flex-start;">
-            <svg width="120" height="120" style="padding: 5px;">
-              <image href="/static/imgs/userimg/{{ current_user.avatar }}" height="100%" width="100%" preserveAspectRatio="xMidYMid slice"/>
-            </svg>
-                {{ form.avatar }}<br>
-                {% for error in form.avatar.errors %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<table class="table table-hover">
+    <tr>
+        <td width="256px">
+            <div class="col-md-4 text-center" style="padding: 25px 0 25px 0;">
+                <svg width="180" height="180">
+                    <image href="/static/imgs/userimg/{{ current_user.avatar }}" height="100%" width="100%"
+                           preserveAspectRatio="xMidYMid slice"/>
+                </svg>
+                <form action="" method="post" novalidate enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    {{ form.avatar(style_="padding-top: 20px;") }}<br>
+                    {% for error in form.avatar.errors %}
                     <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
+                    {% endfor %}
             </div>
-            <div>
-                <p>{{ form.username }}</p>
-                {% for error in form.username.errors %}
+        </td>
+        <td>
+            <div class="col-md-4">
+                <div>
+                    <h1 style="color : blue">Привет - {{ current_user.username }}</h1>
+                    <p>{{ form.username }}</p>
+                    {% for error in form.username.errors %}
                     <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-                <p>{{ form.about_me(cols="35", rows="5") }}</p>
-                {% for error in form.about_me.errors %}
+                    {% endfor %}
+                    <p>{{ form.about_me(cols="35", rows="5") }}</p>
+                    {% for error in form.about_me.errors %}
                     <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-                <p>{{ form.submit }}</p>
-                <p>Последний раз онлайн: {{ current_user.last_seen }}</p>
+                    {% endfor %}
+                    <p>{{ form.submit }}</p>
+                </div>
             </div>
-          </form>
-        </div>
-    </div>
+        </td>
+    </tr>
+</table>
 {% endblock %}

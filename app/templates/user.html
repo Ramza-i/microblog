@@ -1,52 +1,60 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
 
 {% if userlist %}
     <div>
-        <ul style="padding-left:0">
+        <ul style="padding-left:0; text-allign:center;">
             {% for item in userlist %}
             <li style="display: inline"><a href="{{ url_for('user', username=item.username) }}">{{ item.username }}</a></li>
             {% endfor %}
         </ul>
-        <hr>
     </div>
 {% endif %}
-
-  <h1 style="color : blue">Привет - {{ current_user.username }}</h1>
-    <div>
-        <div id="about">
-            <div id="avatar" style="border: 1px solid black; padding: 5px; margin-right: 15px; float:left;" >
-            <svg width="120" height="120" >
-              <image href="/static/imgs/userimg/{{ user.avatar }}" height="100%" width="100%" preserveAspectRatio="xMidYMid slice"/>
-            </svg>
-            </div>
-            <div>
-                <h2 style="color: green; font-size:30px">{{ user.username }}</h2>
-                <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
-                {% if current_user.username == user.username %}
-                    <a href="/edit_profile">Редактировать профиль</a>
+<table class="table table-hover">
+        <tr>
+            <td width="256px">
+                <svg width="180" height="180">
+                    <image href="/static/imgs/userimg/{{ user.avatar }}" height="100%" width="100%"
+                           preserveAspectRatio="xMidYMid slice"/>
+                </svg>
+            </td>
+            <td>
+                <h1 style="color : blue">Привет - {{ current_user.username }}</h1>
+                {% if user.about_me %}<p><b>О себе: </b>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p><b>Последний раз онлайн: </b>{{ user.last_seen }}</p>{% endif %}
+                <p>{{ user.followers.count() }} Подписаны, {{ user.followed.count() }} отслеживает.</p>
+                {% if user == current_user %}
+                    <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
                 {% elif not current_user.is_following(user) %}
-                    <a href="{{ url_for('follow', username=user.username) }}">Подписаться</a>
+                    <p>
+                        <form action="{{ url_for('follow', username=user.username) }}" method="post">
+                            {{ form.hidden_tag() }}
+                            {{ form.submit(value='Подписаться', class_='btn btn-success') }}
+                        </form>
+                    </p>
                 {% else %}
-                    <a href="{{ url_for('unfollow', username=user.username) }}">Отписаться</a>
+                    <p>
+                        <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+                            {{ form.hidden_tag() }}
+                            {{ form.submit(value='Перестать отслеживать', class_='btn btn-danger') }}
+                        </form>
+                    </p>
                 {% endif %}
-                {% if user.about_me %}<p>О себе: {{ user.about_me }}</p>{% endif %}
-                {% if user.last_seen %}<p>Последний раз онлайн: {{ user.last_seen }}</p>{% endif %}
-            </div>
-        </div>
-    </div>
-    <div id="user_posts" style="display: flex; flex-direction: column; clear:both; padding-top:15px; max-width:350px;">
+            </td>
+        </tr>
+    </table>
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}
-        <div style="align-self: center;">
-        {% if prev_url %}
-            <a href="{{ prev_url }}">Новые</a>
-        {% endif %}
-        {% if next_url %}
-            <a href="{{ next_url }}">Старые</a>
-        {% endif %}
-        </div>
-    </div>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li class="previous{% if not prev_url %} disabled{% endif %}">
+                    <a href="{{ prev_url or '#' }}"><span aria-hidden="true">&larr;</span> Свежие посты</a>
+                </li>
+                <li class="next{% if not next_url %} disabled{% endif %}">
+                    <a href="{{ next_url or '#' }}">Старые посты <span aria-hidden="true">&rarr;</span></a>
+                </li>
+            </ul>
+        </nav>
 {% endblock %}
