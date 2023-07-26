@@ -17,7 +17,7 @@
             {{ post.body }}
         </td>
         <td style="text-align: right;">
-            {{ post.timestamp }}
+            {{ moment(post.timestamp).fromNow() }}
         </td>
     </tr>
 </table>
