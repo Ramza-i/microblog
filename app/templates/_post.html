@@ -16,7 +16,7 @@
         {{ post.body }}
     </div>
     <div style="margin-left: auto;display: flex;flex-direction: column;">
-        <div style="text-align: end;">
+        <div style="text-align: end; font-size: 10px;">
             {% if post.author.username == current_user.username %}
             <a href="#" style="color: lightslategrey" onmouseover="style='color:red; text-decoration:none';" onmouseout="this.style.color='lightslategrey';">&#10060;</a>
             {% endif %}
