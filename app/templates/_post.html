@@ -1,23 +1,56 @@
-<table class="table table-hover">
-    <tr>
-        <td width="70px">
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                <svg width="60" height="60">
-                    <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%"
-                           preserveAspectRatio="xMidYMid slice"/>
-                </svg>
-            </a>
-        </td>
-        <td>
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                {{ post.author.username }}
-            </a>
-            says:
-            <br>
-            {{ post.body }}
-        </td>
-        <td style="text-align: right;">
+<div class="table table-hover" style="display:flex; flex-direction: row; border-bottom: 1px solid lightgray;">
+    <div style="min-width: 90px;padding: 5px;text-align: center;">
+        <a href="{{ url_for('user', username=post.author.username) }}">
+            <svg width="60" height="60">
+                <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%"
+                       preserveAspectRatio="xMidYMid slice"/>
+            </svg>
+        </a>
+    </div>
+    <div style="min-width: 70%;max-width: 70%;word-break: break-all;padding: 5px;">
+        <a href="{{ url_for('user', username=post.author.username) }}">
+            {{ post.author.username }}
+        </a>
+        says:
+        <br>
+        {{ post.body }}
+    </div>
+    <div style="margin-left: auto;display: flex;flex-direction: column;">
+        <div style="text-align: end;">
+            {% if post.author.username == current_user.username %}
+            <a href="#" style="color: lightslategrey" onmouseover="style='color:red; text-decoration:none';" onmouseout="this.style.color='lightslategrey';">&#10060;</a>
+            {% endif %}
+        </div>
+        <div style="margin-top: auto; font-size: smaller; font-style: italic; color: lightslategrey;">
             {{ moment(post.timestamp).fromNow() }}
-        </td>
-    </tr>
-</table>
+        </div>
+
+    </div>
+</div>
+
+<!--<table class="table table-hover">-->
+<!--    <tr>-->
+<!--        <td width="70px">-->
+<!--            <a href="{{ url_for('user', username=post.author.username) }}">-->
+<!--                <svg width="60" height="60">-->
+<!--                    <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%"-->
+<!--                           preserveAspectRatio="xMidYMid slice"/>-->
+<!--                </svg>-->
+<!--            </a>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <a href="{{ url_for('user', username=post.author.username) }}">-->
+<!--                {{ post.author.username }}-->
+<!--            </a>-->
+<!--            says:-->
+<!--            <br>-->
+<!--            {{ post.body }}-->
+<!--        </td>-->
+<!--        <td style="text-align: right;">-->
+<!--            &lt;!&ndash;            {% if post.author.username == current_user.username %}&ndash;&gt;-->
+<!--            &lt;!&ndash;                <p>del</p>&ndash;&gt;-->
+<!--            &lt;!&ndash;            {% endif %}&ndash;&gt;-->
+<!--            {{ moment(post.timestamp).fromNow() }}-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</table>-->
