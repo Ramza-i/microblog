@@ -27,6 +27,12 @@ mail = Mail(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
+from app.errors import bp as errors_bp              #Импортируем blueprint как errors_bp
+app.register_blueprint(errors_bp)                   #Регистрируем errors_bp
+
+from app.auth import bp as auth_bp
+app.register_blueprint(auth_bp, url_prefix='/auth')
+
 if not app.debug:
     if app.config['MAIL_SERVER']:
         auth = None
@@ -54,4 +60,4 @@ if not app.debug:
     app.logger.info('Microblog startup')
 
 
-from app import routes, models, errors
+from app import routes, models
