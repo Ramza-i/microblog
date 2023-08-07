@@ -1,6 +1,6 @@
 <div class="table table-hover" style="display:flex; flex-direction: row; border-bottom: 1px solid lightgray;">
     <div style="min-width: 90px;padding: 5px;text-align: center;">
-        <a href="{{ url_for('user', username=post.author.username) }}">
+        <a href="{{ url_for('main.user', username=post.author.username) }}">
             <svg width="60" height="60">
                 <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%"
                        preserveAspectRatio="xMidYMid slice"/>
@@ -8,7 +8,7 @@
         </a>
     </div>
     <div style="min-width: 70%;max-width: 70%;word-break: break-all;padding: 5px;">
-        <a href="{{ url_for('user', username=post.author.username) }}">
+        <a href="{{ url_for('main.user', username=post.author.username) }}">
             {{ post.author.username }}
         </a>
         says:
@@ -31,7 +31,7 @@
 <!--<table class="table table-hover">-->
 <!--    <tr>-->
 <!--        <td width="70px">-->
-<!--            <a href="{{ url_for('user', username=post.author.username) }}">-->
+<!--            <a href="{{ url_for('main.user', username=post.author.username) }}">-->
 <!--                <svg width="60" height="60">-->
 <!--                    <image href="/static/imgs/userimg/{{ post.author.avatar }}" height="100%" width="100%"-->
 <!--                           preserveAspectRatio="xMidYMid slice"/>-->
@@ -39,7 +39,7 @@
 <!--            </a>-->
 <!--        </td>-->
 <!--        <td>-->
-<!--            <a href="{{ url_for('user', username=post.author.username) }}">-->
+<!--            <a href="{{ url_for('main.user', username=post.author.username) }}">-->
 <!--                {{ post.author.username }}-->
 <!--            </a>-->
 <!--            says:-->

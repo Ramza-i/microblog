@@ -6,7 +6,7 @@
     <div>
         <ul style="padding-left:0; text-allign:center;">
             {% for item in userlist %}
-            <li style="display: inline"><a href="{{ url_for('user', username=item.username) }}">{{ item.username }}</a></li>
+            <li style="display: inline"><a href="{{ url_for('main.user', username=item.username) }}">{{ item.username }}</a></li>
             {% endfor %}
         </ul>
     </div>
@@ -25,17 +25,17 @@
                 {% if user.last_seen %}<p><b>Последний раз онлайн: </b>{{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
                 <p>{{ user.followers.count() }} Подписаны, {{ user.followed.count() }} отслеживает.</p>
                 {% if user == current_user %}
-                    <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+                    <p><a href="{{ url_for('main.edit_profile') }}">Редактировать профиль</a></p>
                 {% elif not current_user.is_following(user) %}
                     <p>
-                        <form action="{{ url_for('follow', username=user.username) }}" method="post">
+                        <form action="{{ url_for('main.follow', username=user.username) }}" method="post">
                             {{ form.hidden_tag() }}
                             {{ form.submit(value='Подписаться', class_='btn btn-success') }}
                         </form>
                     </p>
                 {% else %}
                     <p>
-                        <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+                        <form action="{{ url_for('main.unfollow', username=user.username) }}" method="post">
                             {{ form.hidden_tag() }}
                             {{ form.submit(value='Перестать отслеживать', class_='btn btn-danger') }}
                         </form>
