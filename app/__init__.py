@@ -21,7 +21,7 @@ app.config.from_object(Config)                      #Следить чтобы �
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 login = LoginManager(app)
-login.login_view = 'login'
+login.login_view = 'auth.login'
 login.login_message = 'keep out'
 mail = Mail(app)
 bootstrap = Bootstrap(app)
