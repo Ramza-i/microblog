@@ -1,13 +1,19 @@
 from datetime import datetime, timedelta
 import unittest
-from app import app, db
+from app import create_app, db
+from config import Config
 from app.models import User, Post
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+
 
 class UserModelCase(unittest.TestCase):
     def setUp(self):
-        self.app_context = app.app_context()
+        self.app = create_app(TestConfig)
+        self.app_context = self.app.app_context()
         self.app_context.push()
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
         db.create_all()
 
     def tearDown(self):
@@ -21,11 +27,6 @@ class UserModelCase(unittest.TestCase):
         self.assertFalse(u.check_password('dog'))
         self.assertTrue(u.check_password('bob'))
 
-    # def test_avatar(self):
-    #     u = User(username='john', email='john@example.com')
-    #     self.assertEqual(u.avatar(128), ('https://www.gravatar.com/avatar/'
-    #                                      'd4c74594d841139328695756648b6bd6'
-    #                                      '?d=identicon&s=128'))
 
     def test_follow(self):
         u1 = User(username='john', email='john@example.com')
