@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from app import db
 from app.models import User
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
-from app.email import send_password_reset_email
+from app.auth.email import send_password_reset_email
 
 from app.auth import bp
 

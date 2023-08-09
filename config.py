@@ -3,7 +3,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config():
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     POSTS_PER_PAGE = 7
 
@@ -16,5 +15,3 @@ class Config():
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['admin@a.a']
     #/mail
-
-    #Изменения произошедшие в мастере
